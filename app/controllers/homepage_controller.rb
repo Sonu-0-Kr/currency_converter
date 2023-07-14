@@ -11,6 +11,32 @@ class HomepageController < ApplicationController
 
   end
 
+  def update_all
+
+    url = 'https://api.exchangerate-api.com/v4/latest/USD'
+
+    uri = URI(url)
+
+    response = Net::HTTP.get(uri)
+
+    data = JSON.parse(response)
+
+ 
+
+    data['rates'].each do |currency_code, rate|
+
+      currency = Currency.find_by(currency_name: currency_code)
+
+      currency.update(rate: rate) if currency
+
+    end
+
+ 
+
+    render json: { message: 'Data updated successfully' }
+
+  end
+
   def fetch_data
 
     url = 'https://api.exchangerate-api.com/v4/latest/USD'

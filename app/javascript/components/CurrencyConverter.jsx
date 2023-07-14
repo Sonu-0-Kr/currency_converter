@@ -10,12 +10,51 @@ const CurrencyConverter = () => {
   const [convertedAmount, setConvertedAmount] = useState(0);
   const [currencyList, setCurrencyList] = useState([]);
   const [currencyData, setCurrencyData] = useState([]);
-
+  const [message, setMessage] = useState([]);
   useEffect(() => {
     fetchCurrencyList();
     fetchCurrencyData();
   }, []);
+   
+  const updateCurrencies = () => {
 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+ 
+
+    fetch('/homepage/update_all', {
+
+      method: 'PUT',
+
+      headers: {
+
+        'Content-Type': 'application/json',
+
+        'X-CSRF-Token': csrfToken,
+
+      },
+
+    })
+
+      .then((response) => response.json())
+
+      .then((data) => {
+
+        setMessage(data.message);
+
+        console.log(message,"message");
+
+      })
+
+      .catch((error) => {
+
+        console.error('Error updating currencies:', error);
+
+      });
+
+  };
+
+ 
   const fetchDataFromAPI = () => {
     axios.get('/homepage/fetch_data')
       .then(response => {
@@ -80,7 +119,7 @@ const CurrencyConverter = () => {
     const csvData = convertToCSV(formattedData);
     const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
     saveAs(blob, "currency_rates.csv");
-    fetchDataFromAPI();
+    updateCurrencies();
     alert("Done");
   };
 

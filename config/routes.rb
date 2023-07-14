@@ -5,4 +5,5 @@ Rails.application.routes.draw do
    get '/homepage/fetch_data'
   # Defines the root path route ("/")
   # root "articles#index"
+  put "/homepage/update_all"
 end
