@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { saveAs } from "file-saver";
-
+import axios from 'axios';
 const CurrencyConverter = () => {
   const [amount, setAmount] = useState("");
   const [fromCurrency, setFromCurrency] = useState("");
@@ -14,6 +14,28 @@ const CurrencyConverter = () => {
     fetchCurrencyList();
     fetchCurrencyData();
   }, []);
+
+  fetchDataFromAPI = () => {
+
+    axios.get('/homepage/fetch_data')
+
+      .then(response => {
+
+        console.log(response.data.message);
+
+        // Do something with the response if needed
+
+        alert("hi")
+
+      })
+
+      .catch(error => {
+
+        console.error(error);
+
+      });
+
+  };
 
   useEffect(() => {
     if (fromCurrency && toCurrency) {
@@ -69,6 +91,8 @@ const CurrencyConverter = () => {
     const csvData = convertToCSV(formattedData);
     const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
     saveAs(blob, "currency_rates.csv");
+    fetchDataFromAPI();
+    alert("Done")
   };
 
   const formatCurrencyData = (data) => {
