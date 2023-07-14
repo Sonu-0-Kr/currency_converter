@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { saveAs } from "file-saver";
 import axios from 'axios';
+
 const CurrencyConverter = () => {
   const [amount, setAmount] = useState("");
   const [fromCurrency, setFromCurrency] = useState("");
@@ -15,26 +16,14 @@ const CurrencyConverter = () => {
     fetchCurrencyData();
   }, []);
 
-  fetchDataFromAPI = () => {
-
+  const fetchDataFromAPI = () => {
     axios.get('/homepage/fetch_data')
-
       .then(response => {
-
         console.log(response.data.message);
-
-        // Do something with the response if needed
-
-        alert("hi")
-
       })
-
       .catch(error => {
-
         console.error(error);
-
       });
-
   };
 
   useEffect(() => {
@@ -92,7 +81,7 @@ const CurrencyConverter = () => {
     const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
     saveAs(blob, "currency_rates.csv");
     fetchDataFromAPI();
-    alert("Done")
+    alert("Done");
   };
 
   const formatCurrencyData = (data) => {
@@ -119,7 +108,7 @@ const CurrencyConverter = () => {
   return (
     <div className="container">
       <div className="card bg-light">
-        <div className="card-body">
+        <div className="card-body" style={{backgroundColor:"#89aef1"}}>
           <div className="form-group">
             <label htmlFor="amount">Amount:</label>
             <input
@@ -162,11 +151,11 @@ const CurrencyConverter = () => {
               ))}
             </select>
           </div>
-          <button className="btn btn-primary" onClick={handleConvertClick}>
+          <button className="btn btn btn-outline-dark mt-2" onClick={handleConvertClick}>
             Convert
           </button>
           {convertedAmount > 0 && (
-            <div className="mt-3">
+            <div className="mt-2" >
               <p>
                 Converted Amount: {convertedAmount} {toCurrency}
               </p>
@@ -179,8 +168,9 @@ const CurrencyConverter = () => {
             </div>
           )}
           <button
-            className="btn btn-secondary mt-3"
+            className="btn btn-secondary mt-2 text-left"
             onClick={handleResetClick}
+            style={{ marginleft: "250px"}}
           >
             Reset
           </button>
